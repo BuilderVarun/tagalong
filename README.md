@@ -2,6 +2,10 @@
 
 **Plan group trips together, in real time.** Tagalong is a collaborative trip planner where friends collect places, vote on them, build a day-by-day itinerary (by hand or with AI), split expenses and share a packing list. Every change appears instantly for everyone in the trip.
 
+### 🔗 Live app: **[tagalong-a2h0.onrender.com](https://tagalong-a2h0.onrender.com)**
+
+Sign up with an email and password, create a trip and invite your friends. The app runs on a free server that sleeps when idle, so the first load can take up to a minute.
+
 ---
 
 ## The problem
