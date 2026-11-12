@@ -1,0 +1,72 @@
+import 'dotenv/config'
+import { z } from 'zod'
+
+const schema = z.object({
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  PORT: z.coerce.number().int().positive().default(5000),
+  CLIENT_URL: z
+    .string()
+    .default('http://localhost:5173')
+    .transform((value) => value.split(',').map((origin) => origin.trim()).filter(Boolean)),
+  DATABASE_URL: z.string().url(),
+  TEST_DATABASE_URL: z.string().url().optional(),
+  // Optional: shares Socket.IO rooms across API instances. Unreachable Redis falls back to in-memory.
+  REDIS_URL: z.string().trim().optional().transform((v) => v || undefined),
+  JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),
+  ACCESS_TOKEN_TTL: z.string().default('15m'),
+  REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().min(1).max(90).default(7),
+  // Optional: enables "Continue with Google". OAuth 2.0 Web client ID from Google Cloud Console.
+  GOOGLE_CLIENT_ID: z.string().trim().optional().transform((v) => v || undefined),
+  // Invite emails: the Vercel mail relay (Frontend/api/mail-relay.js) if set, else SMTP_URL,
+  // else they're written to the log. MAIL_RELAY_URL e.g. https://your-site.vercel.app/api/mail-relay
+  SMTP_URL: z.string().trim().optional().transform((v) => v || undefined),
+  MAIL_RELAY_URL: z.string().trim().optional().transform((v) => v || undefined).pipe(z.url().optional()),
+  MAIL_RELAY_SECRET: z.string().trim().optional().transform((v) => v || undefined),
+  MAIL_FROM: z.string().default('Tagalong <no-reply@tagalong.app>'),
+  // Public URL of the frontend, used in invite links. Defaults to the first CLIENT_URL.
+  // An empty value (as in .env.example) counts as unset.
+  APP_URL: z.string().trim().optional().transform((v) => v || undefined).pipe(z.url().optional()),
+  INVITE_TTL_DAYS: z.coerce.number().int().min(1).max(30).default(7),
+  // Place search + destination geocoding (OpenStreetMap Nominatim). Empty string disables it.
+  GEOCODER_URL: z
+    .string()
+    .trim()
+    .default('https://nominatim.openstreetmap.org')
+    .transform((v) => v.replace(/\/$/, '') || undefined),
+  // Optional contact email sent to Nominatim (recommended by its usage policy).
+  GEOCODER_EMAIL: z.string().trim().optional().transform((v) => v || undefined),
+  // Optional: AI itinerary planning with Google Gemini (key from https://aistudio.google.com/apikey).
+  // Without a key the planner uses the built-in route-based algorithm.
+  GEMINI_API_KEY: z.string().trim().optional().transform((v) => v || undefined),
+  // Default order favours models that answer reliably on the free tier; the newest
+  // (gemini-3.8-flash) is often overloaded, so it's the last resort.
+  GEMINI_MODEL: z.string().trim().min(1).default('gemini-3.6-flash'),
+  // Tried in order when the main model is overloaded, rate-limited or unavailable.
+  GEMINI_FALLBACK_MODELS: z
+    .string()
+    .default('gemini-3.1-flash-lite,gemini-3.8-flash')
+    .transform((v) => v.split(',').map((m) => m.trim()).filter(Boolean)),
+  AI_TIMEOUT_MS: z.coerce.number().int().min(5000).max(120000).default(30000),
+  COOKIE_SAMESITE: z.enum(['lax', 'strict', 'none']).default('lax'),
+  TRUST_PROXY: z.coerce.number().int().min(0).default(0),
+  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).optional(),
+})
+
+const parsed = schema.safeParse(process.env)
+
+if (!parsed.success) {
+  const problems = parsed.error.issues.map((issue) => `  - ${issue.path.join('.')}: ${issue.message}`).join('\n')
+  console.error(`Invalid environment configuration:\n${problems}`)
+  process.exit(1)
+}
+
+const values = parsed.data
+
+export const env = {
+  ...values,
+  isProduction: values.NODE_ENV === 'production',
+  isTest: values.NODE_ENV === 'test',
+  appUrl: (values.APP_URL ?? values.CLIENT_URL[0]).replace(/\/$/, ''),
+  // Tests run against a separate database so they can truncate tables freely.
+  databaseUrl: values.NODE_ENV === 'test' && values.TEST_DATABASE_URL ? values.TEST_DATABASE_URL : values.DATABASE_URL,
+}

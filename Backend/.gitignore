@@ -1,0 +1,13 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/
+
+# AI assistant skill folders (local tooling, not part of the app)
+.claude/
+.agents/
+.windsurf/
+
+# Skill installer lock file (local tooling)
+skills-lock.json
