@@ -1,5 +1,20 @@
 # Deploying Tagalong (free)
 
+## Simplest: everything on Render
+
+`render.yaml` builds the website and runs the API as **one** web service. The API serves the built site, so there is a single address and no second host.
+
+1. Push this repo to GitHub.
+2. Render → **New → Blueprint** → choose the repo.
+3. When asked, paste `DATABASE_URL` (the Supabase session pooler connection string). Apply.
+4. Open `https://<name>.onrender.com`. `/health` should show `"database":"up"`.
+
+Invite emails are written to the log unless you set `SMTP_URL`; sharing the invite link works without it.
+
+## Alternative: Vercel + Render
+
+This keeps the site fast while the free API wakes up. For it, set `rootDir: Backend` and the Backend-only build and start commands in `render.yaml`.
+
 | Part | Host | Config in repo |
 |---|---|---|
 | Database | [Supabase](https://supabase.com) (PostgreSQL) | — |
