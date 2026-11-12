@@ -2,8 +2,6 @@
 
 **Plan group trips together, in real time.** Tagalong is a collaborative trip planner where friends collect places, vote on them, build a day-by-day itinerary (by hand or with AI), split expenses and share a packing list. Every change appears instantly for everyone in the trip.
 
-**Live demo:** [tagalong-lovat.vercel.app](https://tagalong-lovat.vercel.app). It runs on free hosting, so the first request after a quiet period can take up to a minute while the server wakes up.
-
 ---
 
 ## The problem
