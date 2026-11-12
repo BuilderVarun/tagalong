@@ -2,7 +2,7 @@
 
 | Part | Host | Config in repo |
 |---|---|---|
-| Database | [Neon](https://neon.tech) (PostgreSQL) | — |
+| Database | [Supabase](https://supabase.com) (PostgreSQL) | — |
 | API | [Render](https://render.com) | `render.yaml` |
 | Web app + mail relay | [Vercel](https://vercel.com) | `Frontend/vercel.json`, `Frontend/api/mail-relay.js` |
 
@@ -10,7 +10,7 @@ Render's free plan blocks email ports, so the API sends invite emails through a 
 
 ## Steps (in this order)
 
-1. **Neon:** create a project (Singapore region, to match `render.yaml`) → **Connect** → turn **off** connection pooling → copy the connection string.
+1. **Supabase:** create a project (a US East region, to match `render.yaml`) → **Connect** → copy the **Session pooler** connection string → add `?schema=tagalong` to the end if you want the tables in their own schema.
 2. **Secrets:**
    - Create a Gmail **app password** (Google Account → Security → 2-Step Verification → App passwords).
    - Generate a relay secret: `node -e "console.log(require('crypto').randomBytes(36).toString('base64url'))"`
@@ -28,7 +28,7 @@ Render's free plan blocks email ports, so the API sends invite emails through a 
 
 | Key | Value |
 |---|---|
-| `DATABASE_URL` | Neon connection string (direct, ends with `?sslmode=require`) |
+| `DATABASE_URL` | Supabase session pooler connection string (optionally ending with `?schema=tagalong`) |
 | `CLIENT_URL`, `APP_URL` | `https://<your-site>.vercel.app` (no trailing slash) |
 | `MAIL_FROM` | `Tagalong <you@gmail.com>` |
 | `MAIL_RELAY_URL` | `https://<your-site>.vercel.app/api/mail-relay` |

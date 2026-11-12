@@ -4,9 +4,11 @@ import { z } from 'zod'
 const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().int().positive().default(5000),
+  // Render sets RENDER_EXTERNAL_URL to the service's public address, so a single-service
+  // deploy needs no CLIENT_URL.
   CLIENT_URL: z
     .string()
-    .default('http://localhost:5173')
+    .default(process.env.RENDER_EXTERNAL_URL || 'http://localhost:5173')
     .transform((value) => value.split(',').map((origin) => origin.trim()).filter(Boolean)),
   DATABASE_URL: z.string().url(),
   TEST_DATABASE_URL: z.string().url().optional(),

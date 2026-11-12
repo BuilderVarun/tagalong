@@ -23,7 +23,7 @@ Tagalong brings all of this into one shared workspace that updates live for the 
 - Create a trip with a destination and dates; the creator becomes the **Team Leader**.
 - Invite friends by email with a personal, expiring join link.
 - Roles with clear permissions: members can add and edit places, stops, expenses and packing items, while the leader controls the budget, invitations, member removal and locks.
-- A shared **activity feed** shows who did what ("Aman added Amber Fort", "Riya paid ₹3,000").
+- A shared **activity feed** shows who did what ("Maya added Central Park", "Jordan paid $120").
 
 **Places and voting**
 - Search real places anywhere in the world on a map (OpenStreetMap), or drop a pin for places the map doesn't know.
@@ -65,7 +65,7 @@ Tagalong brings all of this into one shared workspace that updates live for the 
 | **Database** | PostgreSQL 16 (optional Redis for scaling live updates across servers) |
 | **AI and maps** | Google Gemini (itinerary planning), OpenStreetMap Nominatim (place search and geocoding) |
 | **Testing** | Vitest and Supertest: API tests against a real PostgreSQL database, plus unit tests for the web app’s money, settle-up, permission and planning logic |
-| **Hosting** | Vercel (frontend), Render (API), Neon (PostgreSQL); Docker Compose for local development |
+| **Hosting** | Vercel (frontend), Render (API), Supabase (PostgreSQL); Docker Compose for local development |
 
 ---
 
@@ -151,4 +151,4 @@ Google sign-in, AI planning (`GEMINI_API_KEY`) and invite emails (`SMTP_URL`) ar
 
 ## Deployment
 
-The app can be deployed entirely on free plans (Vercel, Render and Neon). See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the step-by-step guide.
+The app can be deployed entirely on free plans (Vercel, Render and Supabase). See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the step-by-step guide.

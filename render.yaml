@@ -1,18 +1,18 @@
-# Render Blueprint for the Tagalong API (Backend/). See DEPLOYMENT.md.
+# Render Blueprint for Tagalong: one web service that builds the website (Frontend/)
+# and runs the API (Backend/), which also serves the built site. See DEPLOYMENT.md.
 # Render → New → Blueprint → pick this repo. Values marked `sync: false` are
 # asked for once in the Render dashboard and never stored in git.
 services:
   - type: web
-    name: tagalong-api
+    name: tagalong
     runtime: node
     plan: free
-    # Same region as the Neon database (AWS Singapore) and close to users in India.
-    region: singapore
-    rootDir: Backend
+    # Same region as the Supabase database (AWS us-east-1) and close to users in the US.
+    region: virginia
     # --include=dev: the Prisma CLI (a dev dependency) is needed to generate the
     # client and apply migrations during the build, even with NODE_ENV=production.
-    buildCommand: npm ci --include=dev && npm run db:deploy
-    startCommand: npm start
+    buildCommand: npm ci --include=dev --prefix Frontend && npm run build --prefix Frontend && npm ci --include=dev --prefix Backend && npm run db:deploy --prefix Backend
+    startCommand: npm start --prefix Backend
     healthCheckPath: /health
     autoDeploy: true
     envVars:
@@ -20,32 +20,18 @@ services:
         value: "22"
       - key: NODE_ENV
         value: production
-      # Requests reach the API through 4 hops: Vercel (the /api rewrite), Cloudflare and
-      # Render's load balancer. Verify with https://<your-site>/api/health → yourIp.
+      # Proxies between the visitor and the API (Cloudflare and Render's load balancer).
+      # Verify with https://<your-site>/api/health → yourIp should be your own IP.
       # Blueprint syncs re-apply this value, so change it here, not only in the dashboard.
       - key: TRUST_PROXY
-        value: "4"
+        value: "3"
       - key: COOKIE_SAMESITE
         value: lax
       - key: JWT_ACCESS_SECRET
         generateValue: true
       - key: DATABASE_URL
         sync: false
-      # Your Vercel URL, e.g. https://tagalong.vercel.app (no trailing slash)
-      - key: CLIENT_URL
-        sync: false
-      - key: APP_URL
-        sync: false
-      - key: MAIL_FROM
-        sync: false
-      # Invite emails go through the Vercel mail relay (Gmail via Frontend/api/mail-relay.js)
-      - key: MAIL_RELAY_URL
-        sync: false
-      - key: MAIL_RELAY_SECRET
-        sync: false
-      - key: GOOGLE_CLIENT_ID
-        sync: false
-      - key: GEMINI_API_KEY
-        sync: false
-      - key: GEOCODER_EMAIL
-        sync: false
+      # Optional, add in the Render dashboard when needed (see Backend/.env.example):
+      # GOOGLE_CLIENT_ID, GEMINI_API_KEY, GEOCODER_EMAIL, SMTP_URL, MAIL_FROM.
+      # CLIENT_URL and APP_URL default to this service's own address; set them only
+      # if you add a custom domain.
