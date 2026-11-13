@@ -5,7 +5,7 @@ import { Combobox } from '../../components/ui/Combobox'
 import { DateRangeField } from '../../components/ui/DateRangeField'
 import { Select } from '../../components/ui/Field'
 import { Button } from '../../components/ui/Button'
-import { DESTINATIONS } from '../../data/destinations'
+import { destinationLabel, suggestDestinations } from '../../data/destinationSearch'
 import { GROUP_TYPES } from '../../data/categories'
 import { addDays, daysBetween, todayIso } from '../../utils/dates'
 import { useAuthStore } from '../../store/useAuthStore'
@@ -45,13 +45,11 @@ export function HeroSearch({ destination, onDestinationChange }) {
               setError('')
             }}
             icon={MapPin}
-            placeholder="New York, Miami, Yellowstone…"
+            placeholder="Any US city, town or park"
             inputClassName="h-12"
             getKey={(d) => d.id}
-            getOptions={(q) =>
-              DESTINATIONS.filter((d) => `${d.name} ${d.region}`.toLowerCase().includes(q.trim().toLowerCase())).slice(0, 6)
-            }
-            onSelect={(d) => onDestinationChange(`${d.name}, ${d.region.split(',')[0]}`)}
+            getOptions={(q) => suggestDestinations(q)}
+            onSelect={(d) => onDestinationChange(destinationLabel(d))}
             emptyText="We’ll plan it anyway — just press Start planning"
             renderOption={(d) => (
               <div className="flex items-center gap-3">

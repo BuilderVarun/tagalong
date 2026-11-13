@@ -9,7 +9,8 @@ import { Button } from '../../components/ui/Button'
 import { Field, Input, Select } from '../../components/ui/Field'
 import { Combobox } from '../../components/ui/Combobox'
 import { DateRangeField } from '../../components/ui/DateRangeField'
-import { DESTINATIONS, findDestination } from '../../data/destinations'
+import { findDestination } from '../../data/destinations'
+import { destinationLabel, suggestDestinations } from '../../data/destinationSearch'
 import { GROUP_TYPES } from '../../data/categories'
 import { addDays, daysBetween, todayIso, tripLength } from '../../utils/dates'
 import { toInputValue, toMinor } from '../../utils/money'
@@ -156,9 +157,9 @@ function TripForm({ onClose, trip, prefill, permissions }) {
                   field.onChange(v)
                 }}
                 getKey={(d) => d.id}
-                getOptions={(q) => DESTINATIONS.filter((d) => `${d.name} ${d.region}`.toLowerCase().includes(q.trim().toLowerCase())).slice(0, 6)}
+                getOptions={(q) => suggestDestinations(q)}
                 onSelect={(d) => {
-                  const label = `${d.name}, ${d.region.split(',')[0]}`
+                  const label = destinationLabel(d)
                   setDestinationQuery(label)
                   field.onChange(label)
                   if (!getValues('name')) setValue('name', `${d.name} trip`)

@@ -1,0 +1,132 @@
+// US cities, towns and parks suggested while typing a trip destination.
+// Only names are needed here: the API looks up the map position when the trip is saved.
+// The hand-picked destinations in destinations.js are listed first and are not repeated here.
+
+export const US_STATES = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California', CO: 'Colorado',
+  CT: 'Connecticut', DE: 'Delaware', DC: 'District of Columbia', FL: 'Florida', GA: 'Georgia',
+  HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa', KS: 'Kansas', KY: 'Kentucky',
+  LA: 'Louisiana', ME: 'Maine', MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota',
+  MS: 'Mississippi', MO: 'Missouri', MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire',
+  NJ: 'New Jersey', NM: 'New Mexico', NY: 'New York', NC: 'North Carolina', ND: 'North Dakota',
+  OH: 'Ohio', OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania', PR: 'Puerto Rico', RI: 'Rhode Island',
+  SC: 'South Carolina', SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont',
+  VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
+}
+
+// Cities and towns by state, larger or better-known places first.
+const CITIES = {
+  AL: ['Birmingham', 'Huntsville', 'Montgomery', 'Mobile', 'Tuscaloosa', 'Gulf Shores', 'Orange Beach', 'Auburn', 'Fairhope'],
+  AK: ['Anchorage', 'Fairbanks', 'Juneau', 'Sitka', 'Ketchikan', 'Seward', 'Homer', 'Talkeetna', 'Girdwood'],
+  AZ: ['Phoenix', 'Tucson', 'Scottsdale', 'Sedona', 'Flagstaff', 'Mesa', 'Tempe', 'Page', 'Prescott', 'Tombstone', 'Lake Havasu City', 'Yuma'],
+  AR: ['Little Rock', 'Fayetteville', 'Hot Springs', 'Bentonville', 'Eureka Springs', 'Fort Smith'],
+  CA: [
+    'Los Angeles', 'San Diego', 'San Jose', 'Sacramento', 'Oakland', 'Long Beach', 'Santa Barbara', 'Santa Monica', 'Palm Springs',
+    'Napa', 'Sonoma', 'Monterey', 'Carmel-by-the-Sea', 'Big Sur', 'Santa Cruz', 'Lake Tahoe', 'South Lake Tahoe', 'Anaheim', 'Malibu',
+    'Laguna Beach', 'Newport Beach', 'Huntington Beach', 'Pasadena', 'Berkeley', 'Fresno', 'San Luis Obispo', 'Mammoth Lakes',
+    'Big Bear Lake', 'Catalina Island', 'Half Moon Bay', 'Sausalito', 'Healdsburg', 'Mendocino', 'Temecula', 'Ojai', 'Solvang',
+    'La Jolla', 'Coronado', 'Venice Beach', 'Hollywood', 'Beverly Hills', 'Palo Alto', 'Bakersfield', 'Redding', 'Eureka',
+  ],
+  CO: ['Denver', 'Boulder', 'Colorado Springs', 'Aspen', 'Vail', 'Breckenridge', 'Telluride', 'Fort Collins', 'Durango', 'Steamboat Springs', 'Estes Park', 'Crested Butte', 'Glenwood Springs', 'Grand Junction', 'Keystone', 'Winter Park'],
+  CT: ['Hartford', 'New Haven', 'Mystic', 'Stamford', 'Greenwich', 'Norwalk'],
+  DE: ['Wilmington', 'Rehoboth Beach', 'Dover', 'Lewes', 'Bethany Beach'],
+  DC: ['Washington'],
+  FL: [
+    'Tampa', 'Jacksonville', 'Fort Lauderdale', 'Key West', 'Miami Beach', 'St. Petersburg', 'Naples', 'Sarasota', 'Clearwater',
+    'Destin', 'Panama City Beach', 'Pensacola', 'St. Augustine', 'West Palm Beach', 'Palm Beach', 'Boca Raton', 'Fort Myers',
+    'Sanibel Island', 'Daytona Beach', 'Cocoa Beach', 'Key Largo', 'Islamorada', 'Marathon', 'Tallahassee', 'Gainesville',
+    'Kissimmee', 'Amelia Island', 'Siesta Key', 'Anna Maria Island', 'Marco Island', 'Cape Canaveral', 'Seaside', 'Delray Beach',
+  ],
+  GA: ['Atlanta', 'Savannah', 'Athens', 'Augusta', 'Tybee Island', 'Jekyll Island', 'St. Simons Island', 'Blue Ridge', 'Helen', 'Macon'],
+  HI: ['Waikiki', 'Maui', 'Lahaina', 'Kihei', 'Wailea', 'Hana', 'Kauai', 'Lihue', 'Princeville', 'Poipu', 'Big Island', 'Kailua-Kona', 'Hilo', 'North Shore Oahu', 'Kailua', 'Lanai', 'Molokai'],
+  ID: ['Boise', 'Sun Valley', 'Coeur d’Alene', 'Idaho Falls', 'Sandpoint', 'McCall', 'Twin Falls'],
+  IL: ['Springfield', 'Naperville', 'Evanston', 'Galena', 'Peoria', 'Champaign', 'Rockford'],
+  IN: ['Indianapolis', 'Bloomington', 'Fort Wayne', 'South Bend', 'Carmel', 'Lafayette'],
+  IA: ['Des Moines', 'Iowa City', 'Cedar Rapids', 'Dubuque', 'Davenport', 'Ames'],
+  KS: ['Wichita', 'Kansas City', 'Topeka', 'Lawrence', 'Overland Park', 'Manhattan'],
+  KY: ['Louisville', 'Lexington', 'Bowling Green', 'Bardstown', 'Frankfort', 'Paducah'],
+  LA: ['Baton Rouge', 'Lafayette', 'Shreveport', 'Lake Charles', 'Natchitoches'],
+  ME: ['Portland', 'Bar Harbor', 'Kennebunkport', 'Ogunquit', 'Camden', 'Bangor', 'Boothbay Harbor', 'Freeport', 'Rockland'],
+  MD: ['Baltimore', 'Annapolis', 'Ocean City', 'Frederick', 'St. Michaels', 'Bethesda'],
+  MA: ['Boston', 'Cambridge', 'Cape Cod', 'Nantucket', 'Martha’s Vineyard', 'Provincetown', 'Salem', 'Plymouth', 'Worcester', 'The Berkshires', 'Lenox', 'Northampton', 'Rockport', 'Hyannis', 'Chatham'],
+  MI: ['Detroit', 'Ann Arbor', 'Grand Rapids', 'Traverse City', 'Mackinac Island', 'Lansing', 'Holland', 'Saugatuck', 'Petoskey', 'Marquette', 'Kalamazoo'],
+  MN: ['Minneapolis', 'St. Paul', 'Duluth', 'Rochester', 'Bloomington', 'Stillwater', 'Grand Marais'],
+  MS: ['Jackson', 'Biloxi', 'Gulfport', 'Oxford', 'Natchez', 'Ocean Springs'],
+  MO: ['St. Louis', 'Kansas City', 'Branson', 'Springfield', 'Columbia', 'Lake of the Ozarks'],
+  MT: ['Bozeman', 'Missoula', 'Whitefish', 'Big Sky', 'Billings', 'Helena', 'Kalispell', 'West Yellowstone', 'Livingston'],
+  NE: ['Omaha', 'Lincoln', 'Grand Island', 'Kearney'],
+  NV: ['Las Vegas', 'Reno', 'Henderson', 'Lake Tahoe', 'Carson City', 'Boulder City', 'Incline Village'],
+  NH: ['Portsmouth', 'Manchester', 'North Conway', 'Concord', 'Hanover', 'Lincoln', 'Lake Winnipesaukee'],
+  NJ: ['Atlantic City', 'Jersey City', 'Newark', 'Cape May', 'Princeton', 'Hoboken', 'Asbury Park', 'Ocean City', 'Wildwood'],
+  NM: ['Santa Fe', 'Albuquerque', 'Taos', 'Las Cruces', 'Roswell', 'Ruidoso', 'Carlsbad'],
+  NY: [
+    'Brooklyn', 'Manhattan', 'Queens', 'Buffalo', 'Niagara Falls', 'Albany', 'Rochester', 'Syracuse', 'The Hamptons', 'Montauk',
+    'Long Island', 'Lake Placid', 'Saratoga Springs', 'Ithaca', 'Hudson', 'Woodstock', 'The Catskills', 'The Adirondacks',
+    'Finger Lakes', 'Lake George', 'Cooperstown', 'Beacon', 'Fire Island',
+  ],
+  NC: ['Charlotte', 'Raleigh', 'Durham', 'Wilmington', 'Outer Banks', 'Chapel Hill', 'Greensboro', 'Winston-Salem', 'Boone', 'Nags Head', 'Kitty Hawk', 'Blowing Rock', 'Wrightsville Beach', 'Bryson City'],
+  ND: ['Fargo', 'Bismarck', 'Medora', 'Grand Forks'],
+  OH: ['Columbus', 'Cleveland', 'Cincinnati', 'Dayton', 'Toledo', 'Akron', 'Sandusky', 'Put-in-Bay', 'Hocking Hills'],
+  OK: ['Oklahoma City', 'Tulsa', 'Norman', 'Broken Bow', 'Stillwater'],
+  OR: ['Portland', 'Bend', 'Eugene', 'Salem', 'Cannon Beach', 'Ashland', 'Hood River', 'Astoria', 'Newport', 'Seaside', 'Medford', 'Willamette Valley'],
+  PA: ['Philadelphia', 'Pittsburgh', 'Lancaster', 'Hershey', 'Gettysburg', 'Harrisburg', 'The Poconos', 'State College', 'Erie', 'Jim Thorpe', 'New Hope'],
+  PR: ['San Juan', 'Rincón', 'Vieques', 'Culebra', 'Ponce'],
+  RI: ['Providence', 'Newport', 'Block Island', 'Narragansett'],
+  SC: ['Myrtle Beach', 'Hilton Head Island', 'Greenville', 'Columbia', 'Kiawah Island', 'Beaufort', 'Folly Beach', 'Isle of Palms'],
+  SD: ['Rapid City', 'Sioux Falls', 'Deadwood', 'Custer', 'Keystone'],
+  TN: ['Nashville', 'Memphis', 'Gatlinburg', 'Knoxville', 'Chattanooga', 'Pigeon Forge', 'Franklin', 'Sevierville'],
+  TX: [
+    'Austin', 'Houston', 'Dallas', 'San Antonio', 'Fort Worth', 'El Paso', 'Galveston', 'Corpus Christi', 'South Padre Island',
+    'Fredericksburg', 'Marfa', 'Waco', 'Lubbock', 'Amarillo', 'Plano', 'Arlington', 'New Braunfels', 'Port Aransas', 'San Marcos',
+    'Wimberley', 'College Station', 'Terlingua',
+  ],
+  UT: ['Salt Lake City', 'Park City', 'St. George', 'Springdale', 'Kanab', 'Provo', 'Ogden', 'Bryce Canyon City', 'Monument Valley'],
+  VT: ['Burlington', 'Stowe', 'Woodstock', 'Montpelier', 'Killington', 'Manchester', 'Brattleboro'],
+  VA: ['Virginia Beach', 'Richmond', 'Williamsburg', 'Charlottesville', 'Alexandria', 'Arlington', 'Norfolk', 'Roanoke', 'Luray', 'Chincoteague'],
+  WA: ['Seattle', 'Spokane', 'Tacoma', 'Bellevue', 'Leavenworth', 'San Juan Islands', 'Friday Harbor', 'Bellingham', 'Port Angeles', 'Walla Walla', 'Olympia', 'Forks', 'Whidbey Island'],
+  WV: ['Charleston', 'Morgantown', 'Harpers Ferry', 'Fayetteville', 'Lewisburg', 'Snowshoe'],
+  WI: ['Milwaukee', 'Madison', 'Green Bay', 'Door County', 'Wisconsin Dells', 'Lake Geneva', 'La Crosse', 'Bayfield'],
+  WY: ['Jackson', 'Jackson Hole', 'Cody', 'Cheyenne', 'Laramie', 'Sheridan', 'Teton Village'],
+}
+
+// National parks and other well-known natural areas: [name, state code].
+const PARKS = [
+  ['Yosemite National Park', 'CA'], ['Zion National Park', 'UT'], ['Glacier National Park', 'MT'], ['Grand Teton National Park', 'WY'],
+  ['Rocky Mountain National Park', 'CO'], ['Great Smoky Mountains National Park', 'TN'], ['Acadia National Park', 'ME'],
+  ['Olympic National Park', 'WA'], ['Mount Rainier National Park', 'WA'], ['North Cascades National Park', 'WA'],
+  ['Joshua Tree National Park', 'CA'], ['Death Valley National Park', 'CA'], ['Sequoia National Park', 'CA'],
+  ['Kings Canyon National Park', 'CA'], ['Redwood National Park', 'CA'], ['Channel Islands National Park', 'CA'],
+  ['Lassen Volcanic National Park', 'CA'], ['Pinnacles National Park', 'CA'], ['Bryce Canyon National Park', 'UT'],
+  ['Arches National Park', 'UT'], ['Canyonlands National Park', 'UT'], ['Capitol Reef National Park', 'UT'],
+  ['Everglades National Park', 'FL'], ['Dry Tortugas National Park', 'FL'], ['Biscayne National Park', 'FL'],
+  ['Shenandoah National Park', 'VA'], ['Big Bend National Park', 'TX'], ['Guadalupe Mountains National Park', 'TX'],
+  ['Denali National Park', 'AK'], ['Kenai Fjords National Park', 'AK'], ['Glacier Bay National Park', 'AK'],
+  ['Katmai National Park', 'AK'], ['Hawaii Volcanoes National Park', 'HI'], ['Haleakala National Park', 'HI'],
+  ['Crater Lake National Park', 'OR'], ['Badlands National Park', 'SD'], ['Wind Cave National Park', 'SD'],
+  ['Theodore Roosevelt National Park', 'ND'], ['Mesa Verde National Park', 'CO'], ['Great Sand Dunes National Park', 'CO'],
+  ['Black Canyon of the Gunnison National Park', 'CO'], ['Saguaro National Park', 'AZ'], ['Petrified Forest National Park', 'AZ'],
+  ['White Sands National Park', 'NM'], ['Carlsbad Caverns National Park', 'NM'], ['Great Basin National Park', 'NV'],
+  ['Hot Springs National Park', 'AR'], ['Mammoth Cave National Park', 'KY'], ['Cuyahoga Valley National Park', 'OH'],
+  ['Indiana Dunes National Park', 'IN'], ['Isle Royale National Park', 'MI'], ['Voyageurs National Park', 'MN'],
+  ['Congaree National Park', 'SC'], ['New River Gorge National Park', 'WV'], ['Gateway Arch National Park', 'MO'],
+  ['Antelope Canyon', 'AZ'], ['Horseshoe Bend', 'AZ'], ['Lake Powell', 'AZ'], ['Mount Rushmore', 'SD'], ['Blue Ridge Parkway', 'NC'],
+  ['Pacific Coast Highway', 'CA'], ['Florida Keys', 'FL'], ['Napa Valley', 'CA'], ['Texas Hill Country', 'TX'], ['Lake Michigan', 'MI'],
+  ['Columbia River Gorge', 'OR'], ['Oregon Coast', 'OR'], ['White Mountains', 'NH'], ['Green Mountains', 'VT'], ['Ozark Mountains', 'AR'],
+  ['Black Hills', 'SD'], ['Sawtooth Mountains', 'ID'], ['Mount Hood', 'OR'], ['Mount St. Helens', 'WA'], ['Red Rock Canyon', 'NV'],
+  ['Hoover Dam', 'NV'], ['Pictured Rocks National Lakeshore', 'MI'], ['Sleeping Bear Dunes', 'MI'], ['Apostle Islands', 'WI'],
+  ['Cape Hatteras', 'NC'], ['Assateague Island', 'MD'], ['Cumberland Island', 'GA'], ['Padre Island National Seashore', 'TX'],
+  ['Point Reyes', 'CA'], ['Muir Woods', 'CA'], ['Na Pali Coast', 'HI'], ['Waimea Canyon', 'HI'], ['Devils Tower', 'WY'],
+]
+
+const place = (name, code, emoji) => ({
+  id: `us-${code.toLowerCase()}-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+  name,
+  region: `${US_STATES[code]}, USA`,
+  emoji,
+})
+
+/** Every US suggestion as { id, name, region, emoji }, cities first, then parks and natural areas. */
+export const US_PLACES = [
+  ...Object.entries(CITIES).flatMap(([code, names]) => names.map((name) => place(name, code, '📍'))),
+  ...PARKS.map(([name, code]) => place(name, code, '🏞️')),
+]

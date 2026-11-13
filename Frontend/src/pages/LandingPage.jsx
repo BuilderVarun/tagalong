@@ -58,7 +58,8 @@ export function LandingPage() {
   return (
     <div className="-mt-16">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-ocean-50 via-sand-50 to-sand-50 pt-16">
+      {/* Clip only sideways: the destination suggestions drop below the bottom of this section. */}
+      <section className="relative z-10 overflow-x-clip bg-gradient-to-b from-ocean-50 via-sand-50 to-sand-50 pt-16">
         <div className="pointer-events-none absolute -top-24 -right-24 size-[28rem] rounded-full bg-coral-200/40 blur-3xl" aria-hidden />
         <div className="pointer-events-none absolute top-40 -left-32 size-[24rem] rounded-full bg-ocean-200/50 blur-3xl" aria-hidden />
 
